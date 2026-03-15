@@ -32,4 +32,4 @@ ENV ORIGIN=http://localhost:3000
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "build"]
+CMD ["node", "--max-old-space-size=128", "build"]

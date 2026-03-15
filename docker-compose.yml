@@ -11,6 +11,10 @@ services:
       - EQUINOX_DB_PATH=/data/vault.db
       - EQUINOX_HEX_KEY=${EQUINOX_HEX_KEY}
       - JWT_SECRET=${JWT_SECRET}
+    deploy:
+      resources:
+        limits:
+          memory: 64M
     ports:
       - "8080:8080"
     restart: always
@@ -24,12 +28,12 @@ services:
       context: ./docker/whisper
       dockerfile: Dockerfile
     volumes:
-      - ./whisper_models/ggml-base.bin:/models/model.bin:ro
+      - ./whisper_models/ggml-tiny.bin:/models/model.bin:ro
     deploy:
       resources:
         limits:
-          cpus: '4.0'
-          memory: 1504M
+          cpus: '2.0'
+          memory: 256M
     networks:
       - equinox-net
     restart: always
@@ -42,6 +46,10 @@ services:
     environment:
       - API_URL=http://backend:8080/api/v1
       - ORIGIN=http://localhost:3000
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     ports:
       - "3000:3000"
     depends_on:
