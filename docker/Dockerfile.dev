@@ -1,0 +1,21 @@
+FROM golang:1.23-bookworm
+
+# Install build dependencies for SQLCipher and tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libsqlite3-dev \
+    tcl \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Air for hot reload
+RUN go install github.com/cosmtrek/air@v1.51.0
+
+WORKDIR /app
+
+# Cache dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Command to run air
+CMD ["air"]

@@ -1,0 +1,199 @@
+/* ── EQUINOX 2.0 — Global Styles ─────────────────────────────────── */
+
+:root {
+	/* Dimension: Work (Cosmic) */
+	--work-bg: #0a0a1a;
+	--work-planet: #4fc3f7;
+	--work-satellite: #5c6bc0;
+	--work-glow: #00e5ff;
+	--work-text: #e0e0e0;
+
+	/* Dimension: Personal (Organic) */
+	--personal-bg: #1a1208;
+	--personal-branch: #66bb6a;
+	--personal-leaf: #ffb300;
+	--personal-accent: #ff7043;
+	--personal-text: #f5f0e0;
+
+	/* Neutral / UI */
+	--bg-panel: rgba(20, 20, 30, 0.85);
+	--bg-overlay: rgba(0, 0, 0, 0.7);
+	--border-subtle: rgba(255, 255, 255, 0.08);
+	--text-primary: #f0f0f0;
+	--text-muted: rgba(255, 255, 255, 0.5);
+
+	/* Gateway */
+	--gateway-glow: #7c4dff;
+
+	/* Typography */
+	--font-main: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+
+	/* Premium Effects */
+	--primary: #6366f1;
+	--primary-glow: rgba(99, 102, 241, 0.4);
+	--glass-bg: rgba(15, 15, 25, 0.7);
+	--glass-border: rgba(255, 255, 255, 0.08);
+
+	/* Timing */
+	--transition-fast: 180ms ease;
+	--transition-medium: 350ms ease;
+	--gateway-duration: 3000ms;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	font-family: var(--font-body);
+	color: var(--text-primary);
+	background: var(--work-bg);
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas takes full viewport ─────────────────────────────────── */
+
+canvas {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* ── Dimension Switcher Bar ─────────────────────────────────────── */
+
+.nav-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 24px;
+	background: var(--bg-panel);
+	backdrop-filter: blur(16px);
+	border-bottom: 1px solid var(--border-subtle);
+}
+
+.logout-btn {
+	position: absolute;
+	left: 24px;
+	background: transparent;
+	border: none;
+	color: var(--text-muted);
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all var(--transition-fast);
+}
+
+.logout-btn:hover {
+	color: #ff5252;
+	background: rgba(255, 82, 82, 0.1);
+}
+
+.nav-links {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.nav-links a {
+	text-decoration: none;
+	color: var(--text-muted);
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	padding: 6px 16px;
+	border-radius: 20px;
+	transition: all var(--transition-fast);
+}
+
+.nav-links a:hover {
+	color: var(--text-primary);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-links a.active {
+	color: var(--work-glow);
+	background: rgba(0, 229, 255, 0.1);
+}
+
+.nav-links a.active-personal {
+	color: var(--personal-leaf);
+	background: rgba(255, 179, 0, 0.1);
+}
+
+/* ── Gateway Overlay ────────────────────────────────────────────── */
+
+.gateway-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 200;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: var(--bg-overlay);
+	backdrop-filter: blur(24px);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 300ms ease;
+}
+
+.gateway-overlay.active {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.gateway-circle {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background: radial-gradient(circle, var(--gateway-glow), transparent 70%);
+	animation: breathe var(--gateway-duration) ease-in-out;
+}
+
+@keyframes breathe {
+	0%   { transform: scale(0.6); opacity: 0.3; }
+	50%  { transform: scale(1.4); opacity: 1.0; }
+	100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+.gateway-text {
+	margin-top: 24px;
+	font-size: 18px;
+	font-weight: 300;
+	color: var(--text-primary);
+	text-align: center;
+	opacity: 0;
+	animation: fadeIn 600ms 300ms ease forwards;
+}
+
+.gateway-quote {
+	margin-top: 8px;
+	font-size: 13px;
+	font-style: italic;
+	color: var(--text-muted);
+	opacity: 0;
+	animation: fadeIn 600ms 800ms ease forwards;
+}
+
+@keyframes fadeIn {
+	to { opacity: 1; }
+}
+
+/* ── Scrollbar hidden ───────────────────────────────────────────── */
+
+::-webkit-scrollbar { display: none; }

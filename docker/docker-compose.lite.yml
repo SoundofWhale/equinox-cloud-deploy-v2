@@ -1,0 +1,32 @@
+services:
+  backend:
+    image: golang:1.22
+    container_name: equinox-backend-lite
+    working_dir: /app
+    volumes:
+      - ../backend:/app
+      - vault_data:/vault
+    environment:
+      - EQUINOX_ENV=development
+      - EQUINOX_DB_PATH=/vault/vault.db
+      - EQUINOX_LITE_MODE=true
+    ports:
+      - "8080:8080"
+    command: sh -c "go install github.com/cosmtrek/air@v1.51.0 && air"
+    restart: unless-stopped
+
+  frontend:
+    image: node:20-alpine
+    container_name: equinox-frontend-lite
+    working_dir: /app
+    volumes:
+      - ../frontend:/app
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    depends_on:
+      - backend
+
+volumes:
+  vault_data:
+    driver: local

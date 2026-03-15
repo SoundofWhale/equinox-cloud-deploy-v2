@@ -1,0 +1,30 @@
+# Build artifacts
+bin/
+obj/
+*.exe
+main
+server
+tmp_build.exe
+
+# Local data
+backend/data/
+vault.db
+*.db
+
+# Node dependencies
+node_modules/
+dist/
+build/
+.svelte-kit/
+
+# Environment variables
+.env
+.env.*
+
+# Large models
+whisper_models/
+
+# VS Code / OS files
+.vscode/
+.DS_Store
+Thumbs.db
