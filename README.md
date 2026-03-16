@@ -1,102 +1,149 @@
-# EQUINOX 2.0 — Master Orchestrator
+![Build](https://github.com/koyeb/koyeb-cli/workflows/Release/badge.svg)
 
-> Zero-knowledge visual task manager. Cosmic Work dimension. Organic Personal dimension. On-device AI. No compromises on privacy.
+# Koyeb CLI
 
----
+The Koyeb CLI (Command Line Interface) is a powerful tool to manage your Koyeb serverless infrastructure directly from your terminal.
 
-## Agent Network
+## Installation
 
-| Agent | Role | Skills | File |
-|-------|------|--------|------|
-| 🛡️ **Warden** | Security, Docker, Encryption, Recovery | [equinox_warden_skills.md](file:///c:/AI/skills/equinox_warden_skills.md) | [equinox_warden.md](file:///c:/AI/agents/equinox_warden.md) |
-| 🎨 **Architect** | Infinite Canvas, PixiJS, Dimensions, Animations | [equinox_architect_skills.md](file:///c:/AI/skills/equinox_architect_skills.md) | [equinox_architect.md](file:///c:/AI/agents/equinox_architect.md) |
-| ⚖️ **Arbiter** | Conflict Engine, Emergency Mode, Snapshotting | [equinox_arbiter_skills.md](file:///c:/AI/skills/equinox_arbiter_skills.md) | [equinox_arbiter.md](file:///c:/AI/agents/equinox_arbiter.md) |
-| 🤖 **Messenger** | AI (Mistral/Ollama), OCR, Mascot Equi, Audio | [equinox_messenger_skills.md](file:///c:/AI/skills/equinox_messenger_skills.md) | [equinox_messenger.md](file:///c:/AI/agents/equinox_messenger.md) |
+### Download from GitHub
 
----
+The CLI can be installed from pre-compiled binaries for macOS (darwin), Linux and Windows. You can download the appropriate version from the [Releases](https://github.com/koyeb/koyeb-cli/releases) page.
 
-## Tech Stack
+### MacOS
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | Go 1.22+ |
-| Database | SQLite + SQLCipher (AES-256) |
-| Frontend | SvelteKit + PixiJS |
-| AI | Mistral 7B via Ollama (local) |
-| OCR | Tesseract |
-| Container | Docker |
-| Encryption | AES-256-GCM, Argon2id, BIP-39 |
+You can install the latest version of the Koyeb CLI on macOS using [Homebrew](http://brew.sh/):
 
----
-
-## Project Structure
-
-```
-EQUINOX/
-├── backend/                    # Go backend
-│   ├── cmd/
-│   │   ├── server/             # main.go — HTTP server entrypoint
-│   │   ├── seed_slots/         # CLI: seed default conflict slots
-│   │   └── check_cipher/      # CLI: verify SQLCipher setup
-│   └── internal/
-│       ├── models/             # Task, Slot, Snapshot structs
-│       ├── security/           # Encryption, key management (Warden)
-│       ├── relay/              # E2EE sync relay client (Warden)
-│       ├── arbiter/            # Conflict engine, emergency mode (Arbiter)
-│       ├── snapshot/           # Snapshotting & restore (Arbiter)
-│       ├── ai/                 # Ollama client, anonymizer (Messenger)
-│       └── ocr/                # Tesseract wrapper (Messenger)
-├── frontend/                   # SvelteKit app
-│   ├── src/
-│   │   ├── routes/
-│   │   │   ├── work/           # Work Dimension (cosmic)
-│   │   │   └── personal/       # Personal Dimension (organic tree)
-│   │   └── lib/
-│   │       ├── canvas/         # PixiJS renderers (Architect)
-│   │       ├── components/     # Gateway, Mascot, EmergencyButton
-│   │       ├── stores/         # tasks, dimension, mascot stores
-│   │       └── utils/          # audio, smartFocus, weightCalc
-│   └── static/assets/audio/   # equi_success.mp3, equi_breath.mp3, equi_warning.mp3
-├── docker/
-│   ├── Dockerfile              # Go backend container
-│   └── docker-compose.yml      # Full stack orchestration
-├── vault/
-│   └── media/                  # Encrypted media files (AES-256-GCM)
-└── .agent/
-    └── workflows/             # Agent-specific dev workflows
+```shell
+brew install koyeb/tap/koyeb
 ```
 
----
+You can upgrade an existing installation of the Koyeb CLI running:
 
-## Development Phases
-
-### Phase 1 — Warden (Foundation)
-```powershell
-# Run workflow
-# See .agent/workflows/start_warden.md
 ```
-Deliverable: Encrypted DB running in Docker, Recovery Key generation, Relay API stub.
-
-### Phase 2 — Architect (Canvas)
-```powershell
-# See .agent/workflows/start_architect.md
+brew upgrade koyeb
 ```
-Deliverable: Infinite Canvas with Work/Personal switching, Smart Focus, weight dynamics.
 
-### Phase 3 — Arbiter (Logic)
-```powershell
-# See .agent/workflows/start_arbiter.md
+### Living at the Edge
+
+To install the latest `koyeb` binary with go, simply run:
+
+```shell
+go get github.com/koyeb/koyeb-cli/cmd/koyeb
+go install github.com/koyeb/koyeb-cli/cmd/koyeb
 ```
-Deliverable: Full task CRUD + conflict engine + emergency mode + snapshotting.
 
-### Phase 4 — Messenger (Intelligence)
-```powershell
-# See .agent/workflows/start_messenger.md
+If you need a go environment, follow the [official Go installation documentation](https://golang.org/doc/install).
+
+
+## Getting started
+
+### Initial configuration
+
+Generate an API token and run `koyeb login` to create a new configuration file.
+
+```shell
+➜ koyeb login
+? Do you want to create a new configuration file in (/Users/kbot/.koyeb.yaml)? [y/N]
+✗ Enter your personal access token. You can create a new token here (https://app.koyeb.com/user/settings/api/): *************
+INFO[0006] Creating new configuration in /Users/kbot/.koyeb.yaml
 ```
-Deliverable: Mistral AI query + OCR pipeline + Gateway animation + Equi mascot.
 
----
+### General usage
 
-## Full Specification
+```shell
+➜ koyeb --help
+Koyeb CLI
 
-See [MASTER_SPEC.md](file:///c:/AI/EQUINOX/MASTER_SPEC.md) for the complete technical reference.
+Usage:
+  koyeb [command]
+
+Available Commands:
+  apps                 Apps
+  archives             Archives
+  completion           Generate completion script
+  databases            Databases
+  deploy               Deploy a directory to Koyeb
+  deployments          Deployments
+  domains              Domains
+  help                 Help about any command
+  instances            Instances
+  login                Login to your Koyeb account
+  metrics              Metrics
+  organizations        Organization
+  regional-deployments Regional deployments
+  secrets              Secrets
+  services             Services
+  version              Get version
+  volumes              Manage persistent volumes
+
+Flags:
+  -c, --config string         config file (default is $HOME/.koyeb.yaml)
+  -d, --debug                 enable the debug output
+      --debug-full            do not hide sensitive information (tokens) in the debug output
+      --force-ascii           only output ascii characters (no unicode emojis)
+      --full                  do not truncate output
+  -h, --help                  help for koyeb
+      --organization string   organization ID
+  -o, --output output         output format (yaml,json,table)
+      --token string          API token
+      --url string            url of the api (default "https://app.koyeb.com")
+
+Use "koyeb [command] --help" for more information about a command.
+```
+
+
+### Enabling shell auto-completion
+
+`koyeb` has auto-completion support for `bash`, `zsh` and `fish`.
+
+#### Bash
+
+You can easily do `source <(koyeb completion bash)` to add completion to your current Bash session.
+
+To load completions for all sessions, simply add the auto-completion script to your `bash_completion.d` folder.
+
+On Linux:
+
+```shell
+koyeb completion bash > /etc/bash_completion.d/koyeb
+```
+
+On MacOs:
+
+```shell
+koyeb completion bash > /usr/local/etc/bash_completion.d/koyeb
+```
+
+You will need to start a new shell for this setup to take effect.
+
+#### Zsh
+
+If shell completion is not already enabled in your environment you will need to enable it.  You can execute the following once:
+
+```shell
+echo "autoload -U compinit; compinit" >> ~/.zshrc
+```
+
+To automatically load completions for all your shell session, execute once:
+
+```shell
+koyeb completion zsh > "${fpath[1]}/_koyeb"
+```
+
+You will need to start a new shell for this setup to take effect.
+
+#### Fish
+
+You can easily run `koyeb completion fish | source` to add completions to your current Fish session.
+
+To automatically load completions for all your shell session, execute once:
+
+```shell
+koyeb completion fish > ~/.config/fish/completions/koyeb.fish
+```
+
+## Contribute
+
+Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
+

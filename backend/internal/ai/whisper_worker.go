@@ -37,13 +37,15 @@ type WhisperWorker struct {
 	results     map[string]*WhisperTask
 	resultsLock sync.RWMutex
 	concurrency int
+	engineURL   string
 }
 
-func NewWhisperWorker(queueSize int, concurrency int) *WhisperWorker {
+func NewWhisperWorker(queueSize int, concurrency int, engineURL string) *WhisperWorker {
 	return &WhisperWorker{
 		taskQueue:   make(chan *WhisperTask, queueSize),
 		results:     make(map[string]*WhisperTask),
 		concurrency: concurrency,
+		engineURL:   engineURL,
 	}
 }
 
@@ -97,7 +99,7 @@ func (w *WhisperWorker) processTask(task *WhisperTask) {
 	log.Printf("🎙️ Decrypting %d bytes for whisper task %s", len(task.EncryptedAudio), task.ID)
 
 	// 2. Pipe to Whisper Container
-	req, err := http.NewRequest("POST", "http://whisper-engine:8080/inference", decryptReader)
+	req, err := http.NewRequest("POST", w.engineURL, decryptReader)
 	if err != nil {
 		task.Error = "failed to create whisper request: " + err.Error()
 		task.Status = StatusFailed
