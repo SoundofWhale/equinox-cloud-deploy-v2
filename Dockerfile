@@ -7,7 +7,7 @@ COPY frontend/ .
 RUN npm run build
 
 # Stage 2: Build Go Backend
-FROM golang:1.22-bookworm AS backend-builder
+FROM golang:1.23-bookworm AS backend-builder
 WORKDIR /app/backend
 # Install SQLCipher dependencies
 RUN apt-get update && apt-get install -y libsqlite3-dev
@@ -25,7 +25,7 @@ RUN cmake -B build -DWHISPER_BUILD_EXAMPLES=ON -DBUILD_SHARED_LIBS=OFF && \
     cmake --build build --config Release -j $(nproc)
 
 # Stage 4: Build Whisper Go Wrapper
-FROM golang:1.22-bookworm AS whisper-wrapper-builder
+FROM golang:1.23-bookworm AS whisper-wrapper-builder
 WORKDIR /app/whisper
 COPY docker/whisper/main.go .
 RUN go build -o /whisper-wrapper main.go
